@@ -1,52 +1,38 @@
-# Overview
+# 概述
 
-easy-rsa is a CLI utility to build and manage a PKI CA. In laymen's terms,
-this means to create a root certificate authority, and request and sign 
-certificates, including sub-CAs and certificate revocation lists (CRL).
+easy-rsa 是用于构建和管理 PKI CA 的 CLI 实用程序。 简单来说，意思是要创建根证书颁发机构，并请求和签名证书，包括子 CA 和证书吊销列表（CRL）。
 
-# Downloads
+# 下载
 
-If you are looking for release downloads, please see the releases section on
-GitHub. Releases are also available as source checkouts using named tags.
+如果您正在寻找发行版本下载，请参阅 GitHub 上的发行版本部分。 发行版本也可以使用命名标签作为源签出。
 
-# Documentation
+# 文档
 
-For 3.x project documentation and usage, see the [README.quickstart.md](README.quickstart.md) file or
-the more detailed docs under the doc/ directory. The .md files are in Markdown
-format and can be converted to html files as desired for release packages, or
-read as-is in plaintext.
+有关 3.x 项目文档和用法，请参阅 [README.quickstart.md](README.quickstart.md) 文件或 doc/ 目录下的更加详细的文档。 .md 文件为 Markdown 格式，可以根据需要将其转换为 html 文件，以作为发行版软件包的使用，也可以以文本原样阅读。
 
-# Getting help using easy-rsa
+# 获得 Easy-RSA 使用帮助
 
-Currently, Easy-RSA development co-exists with OpenVPN even though they are
-separate projects. The following resources are good places as of this writing to
-seek help using Easy-RSA:
+目前，尽管 Easy-RSA 开发是个单独的项目，但它是与 OpenVPN 共存的。 在撰写本文时，以下资源是寻求 Easy-RSA 使用帮助的好地方：
 
-The [openvpn-users mailing list](https://lists.sourceforge.net/lists/listinfo/openvpn-users)
-is a good place to post usage or help questions.
+[openvpn-users mailing list](https://lists.sourceforge.net/lists/listinfo/openvpn-users)  邮件列表是发布用法或请求帮助问题的好地方。
 
-You can also try IRC at Freenode/#openvpn for general support or Freenode/#easyrsa for development discussion.
+您也可以尝试在 IRC 的 Freenode/#openvpn 上获得常规支持，或者在 Freenode/#easyrsa 进行开发讨论。
 
-# Branch structure
+# 分支结构
 
-The easy-rsa master branch is currently tracking development for the 3.x release
-cycle. Please note that, at any given time, master may be broken.  Feel free to
-create issues against master, but have patience when using the master branch.  It
-is recommended to use a release, and priority will be given to bugs identified in
-the most recent release.
+easy-rsa master 分支当前正在跟踪 3.x 发行版周期的开发。 请注意，在任何时候，master 分支可能会有问题。 随时可以针对 master 分支提出问题，但是在使用 master 分支时要有耐心。 建议使用发行版，并且优先考虑最新发行版中发现的错误。
 
-The prior 2.x and 1.x versions are available as release branches for
-tracking and possible back-porting of relevant fixes. Branch layout is:
+先前的 2.x 和 1.x 版本可用作发行分支，用于跟踪和修补相关修订。 一下为分支布局为：
 
     master         <- 3.x, at present
     v3.x.x            pre-release branches, used for staging branches
     release/2.x
     release/1.x
 
-LICENSING info for 3.x is in the [COPYING.md](COPYING.md) file
+3.x 的许可信息位于 [COPYING.md](COPYING.md) 文件中。
 
 # Code style, standards
 
-We are attempting to adhere to the POSIX standard, which can be found here:
+我们正在尝试遵守 POSIX 标准，该标准可在此处找到：
 
 http://pubs.opengroup.org/onlinepubs/9699919799/
