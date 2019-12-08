@@ -1,97 +1,45 @@
-Introduction to PKI
+PKI 介绍
 ===================
 
-This document is designed to give you a brief introduction into how a PKI, or
-Public Key Infrastructure, works.
+本文档旨在为您简要介绍 PKI 或公钥基础设施的工作方式。
 
-Terminology Used
+使用的术语
 ----------------
 
-To avoid confusion, the following terms will be used throughout the Easy-RSA
-documentation. Short forms may be substituted for longer forms as convenient.
+为避免混淆，在 Easy-RSA 文档中将使用以下术语。 短格式可以方便地代替长格式。
 
- *  **PKI**: Public Key Infrastructure. This describes the collection of files
-    and associations between the CA, keypairs, requests, and certificates.
- *  **CA**: Certificate Authority. This is the "master cert" at the root of a
-    PKI.
- *  **cert**: Certificate. A certificate is a request that has been signed by a
-    CA. The certificate contains the public key, some details describing the
-    cert itself, and a digital signature from the CA.
- *  **request**: Certificate Request (optionally 'req'.) This is a request for a
-    certificate that is then send to a CA for signing. A request contains the
-    desired cert information along with a digital signature from the private
-    key.
- *  **keypair**: A keypair is an asymmetric cryptographic pair of keys. These
-    keys are split into two parts: the public and private keys. The public key
-    is included in a request and certificate.
+ *  **PKI**: 公钥基础设施。 这描述了 CA，密钥对，请求和证书之间的文件和关联的集合。
+ *  **CA**: 证书机构。 这是 PKI 根源上的“主证书”。
+ *  **cert**: 证书。 证书是由 CA 签名的请求。 证书包含公钥，描述证书本身的一些详细信息以及 CA 的数字签名。
+ *  **request**: 证书请求（可选为“req”。）请求证书，然后将其发送到 CA 进行签名。 请求包含所需的证书信息以及私钥中的数字签名。
+ *  **keypair**: 密钥对是非对称加密密钥对。 这些密钥分为两个部分：公共密钥和私有密钥。 公钥包含在请求和证书中。
 
-The CA
+证书机构
 ------
 
-The heart of a PKI is the CA, or Certificate Authority, and this is also the
-most security-sensitive. The CA private key is used to sign all issued
-certificates, so its security is critical in keeping the entire PKI safe. For
-this reason, it is highly recommended that the CA PKI structure be kept on a
-system dedicated for such secure usage; it is not a great idea to keep the CA
-PKI mixed in with one used to generate end-entity certificates, such as clients
-or servers (VPN or web servers.)
+PKI 的核心是 CA 或证书机构，这也是对安全性最敏感的。 CA 私钥用于签署所有已颁发的证书，因此其安全性对于确保整个 PKI 安全至关重要。 因此，强烈建议将 CA PKI 结构保留在致力于这种安全使用的系统上； 将 CA PKI 与用于生成最终实体证书的证书（例如客户端或服务器（VPN 或 Web 服务器））混合在一起不是一个好主意。
 
-To start a new PKI, the CA is first created on the secure environment.
-Depending on security needs, this could be managed under a locked down account,
-dedicated system, or even a completely offline system or using removable media
-to improve security (after all, you can't suffer an online break-in if your
-system or PKI is not online.) The exact steps to create a CA are described in a
-separate section. When creating a new CA, the CA keypair (private and public
-keys) are created, as well as the file structure necessary to support signing
-issued certificates.
+要启动新的 PKI，首先在安全环境上创建 CA。 根据安全需求，可以在锁定的帐户，专用系统甚至是完全脱机的系统下进行管理，或者使用可移动介质来提高安全性（毕竟，如果您的系统或 PKI 没有联网，就不会遭受在线入侵。创建 CA 的确切步骤会在在单独的部分中说明。 创建新的 CA 时，将创建 CA 密钥对（私钥和公钥），以及支持对颁发的证书进行签名所必需的文件结构。
 
-Once a CA has been created, it can receive certificate requests from
-end-entities. These entity certificates are issued to consumers of X509
-certificates, such as a client or server of a VPN, web, or email system.  The
-certificate requests and certificates are not security-sensitive, and can be
-transferred in whatever means convenient, such as email, flash drive, etc. For
-better security, it is a good idea to verify the received request matches the
-sender's copy, such as by verifying the expected checksum against the sender's
-original.
+一旦创建了 CA，它就可以接收来自最终实体的证书请求。 这些实体证书将颁发给 X509 证书的使用者，例如 VPN ，Web 或电子邮件系统的客户端或服务器。 证书请求和证书不是安全敏感的，可以通过任何方便的方式进行传输，例如电子邮件，闪存驱动器等。为了提高安全性，最好验证接收到的请求是否与发件人的副本匹配，例如 通过对照发件人的原件与预期的校验和来验证。
 
-Keypairs and requests
+密钥对和请求
 ---------------------
 
-Individual end-entities do not need a full CA set up and will only need to
-create a keypair and associated certificate request. The private key is not used
-anywhere except on this entity, and should never leave that system. It is wise
-to secure this private key with a strong passphrase, because if lost or stolen
-the holder of the private key can make connections appearing as the certificate
-holder.
+个体终端实体不需要完整的 CA 设置，仅需要创建密钥对和关联的证书请求。 私钥除了在该实体上之外没有在其它任何地方使用，并且永远不应该离开该系统。 明智的做法是使用强密码短语来保护此私钥，因为如果私钥的持有者丢失或被盗，则可能会使连接显示为此证书持有者。
 
-Once a keypair is generated, the certificate request is created and digitally
-signed using the private key. This request will be sent to a CA for signing, and
-a signed certificate will be returned.
+生成密钥对后，将创建证书请求并使用私钥进行数字签名。 该请求将被发送到 CA 进行签名，并返回已签名的证书。
 
-How requests become certificates
+请求是如何成为证书的
 --------------------------------
 
-After a CA signs the certificate request, a signed certificate is produced. In
-this step, the CA's private key is used to digitally sign the entity's public
-key so that any system trusting the CA certificate can implicitly trust the
-newly issued certificate. This signed certificate is then sent back to the
-requesting entity. The issued certificate is not security-sensitive and can be
-sent over plaintext transmission methods.
+CA 签名证书请求后，将生成签名证书。 在此步骤中，使用 CA 的私钥对实体的公钥进行数字签名，以便任何信任 CA 证书的系统都可以完全信任新发行的证书。 然后将该签名的证书发送回请求实体。 颁发的证书不是安全敏感的，可以通过纯文本传输方法发送。
 
-Verifying an issued certificate
+验证颁发的证书
 -------------------------------
 
-After 2 entities have created keypairs, sent their requests to the CA, and
-received a copy of their signed certificates and the CA's own certificate, they
-can mutually authenticate with one-another. This process does not require the 2
-entities to have previously exchanged any kind of security information directly.
+在两个实体创建了密钥对，将其请求发送到 CA，并收到其签名证书和 CA 自己的证书的副本后，它们可以彼此进行相互身份验证。 此过程不需要这两个实体先前直接交换过任何类型的安全信息。
 
-During a TLS handshake each side of the connection presents their own cert chain
-to the remote end. Each side checks the validity of the cert received against
-their own copy of the CA cert. By trusting the CA root cert, the peer they are
-talking to can be authenticated.
+在 TLS 握手过程中，连接的每一端都会向远端呈现自己的证书链。 双方均对照自己的 CA 证书副本来检查收到的证书的有效性。 通过信任 CA 根证书，可以验证与之交谈的对等方。
 
-The remote end proves it "really is" the entity identified by the cert by
-signing a bit of data using its own private key. Only the holder of the private
-key is able to do this, allowing the remote end to verify the authenticity of
-the system being connected to.
+远端通过使用其自己的私钥对数据进行签名来证明其“确实是”证书所标识的实体。 只有私钥持有者才能执行此操作，从而允许远端验证所连接系统的真实性。
