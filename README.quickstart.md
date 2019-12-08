@@ -1,99 +1,81 @@
-Easy-RSA 3 Quickstart README
+Easy-RSA 3 快速入门自述文件
 ============================
 
-This is a quickstart guide to using Easy-RSA version 3. Detailed help on usage
-and specific commands can be found by running ./easyrsa -h.  Additional
-documentation can be found in the doc/ directory.
+Easy-RSA 版本 3 使用快速入门指南。可以通过运行 ./easyrsa -h 找到有关用法和特定命令的详细帮助。 其它文档可以在 doc/ 目录中找到。
 
-If you're upgrading from the Easy-RSA 2.x series, there are Upgrade-Notes
-available, also under the doc/ path.
+如果要从 Easy-RSA 2.x 系列进行升级，则在 doc/ 路径下也有可用的升级说明。
 
-Setup and signing the first request
+设置并签署第一个请求
 -----------------------------------
 
-Here is a quick run-though of what needs to happen to start a new PKI and sign
-your first entity certificate:
+以下是以启动新的 PKI 并签署您的第一个实体证书的快速入门：
 
-1. Choose a system to act as your CA and create a new PKI and CA:
+1. 选择一个系统作为您的 CA，并创建一个新的 PKI 和 CA：
 
         ./easyrsa init-pki
         ./easyrsa build-ca
 
-2. On the system that is requesting a certificate, init its own PKI and generate
-   a keypair/request. Note that init-pki is used _only_ when this is done on a
-   separate system (or at least a separate PKI dir.) This is the recommended
-   procedure. If you are not using this recommended procedure, skip the next
-   import-req step.
+2. 在请求证书的系统上，初始化其相应的 PKI，并生成密钥对/请求。 请注意，当_只_在单独的系统（或至少一个单独的 PKI 目录）上执行时，才使用 init-pki。这是推荐的步骤。 如果您不使用此推荐的步骤，请跳过下一个 import-req 步骤。
 
         ./easyrsa init-pki
         ./easyrsa gen-req EntityName
 
-3. Transport the request (.req file) to the CA system and import it. The name
-   given here is arbitrary and only used to name the request file.
+3. 将请求（.req 文件）传输到 CA 系统并导入。 此处给出的名称是任意的，仅用于命名请求文件。
 
         ./easyrsa import-req /tmp/path/to/import.req EntityName
 
-4. Sign the request as the correct type. This example uses a client type:
+4. 使用正确的类型为请求签名。 本示例使用 client 类型：
 
         ./easyrsa sign-req client EntityName
 
-5. Transport the newly signed certificate to the requesting entity. This entity
-   may also need the CA cert (ca.crt) unless it had a prior copy.
+5. 将新签署的证书传输到请求实体。 除非该实体具有先前证书的副本，否则可能还需要 CA 证书（ca.crt）。
 
-6. The entity now has its own keypair, signed cert, and the CA.
+6. 该实体现在具有自己的密钥对，已签名的证书和 CA。
 
-Signing subsequent requests
+签名后续请求
 ---------------------------
 
-Follow steps 2-6 above to generate subsequent keypairs and have the CA return
-signed certificates.
+请按照上面的步骤 2-6 生成后续密钥对，并让 CA 返回已签名的证书。
 
-Revoking certs and creating CRLs
+废除证书并创建 CRL
 --------------------------------
 
-This is a CA-specific task.
+这是特定于 CA 的工作。
 
-To permanently revoke an issued certificate, provide the short name used during
-import:
+要永久废除已颁发的证书，可使用导入期间采用的简称：
 
         ./easyrsa revoke EntityName
 
-To create an updated CRL that contains all revoked certs up to that point:
+要创建一个更新的 CRL，其中包含到那时为止所有已废除的证书：
 
         ./easyrsa gen-crl
 
-After generation, the CRL will need to be sent to systems that reference it.
+生成后，要将 CRL 发送到引用它的系统。
 
-Generating Diffie-Hellman (DH) params
+生成 Diffie-Hellman（DH）参数
 -------------------------------------
 
-After initializing a PKI, any entity can create DH params that needs them. This
-is normally only used by a TLS server. While the CA PKI can generate this, it
-makes more sense to do it on the server itself to avoid the need to send the
-files to another system after generation.
+初始化 PKI 后，任何实体都可以创建其所需的 DH 参数。 通常仅由 TLS 服务器使用。 虽然 CA PKI 可以生成此文件，但在其所在的服务器上执行此操作更有意义，以避免在生成文件后将文件发送到另一个系统。
 
-DH params can be generated with:
+DH 参数可以通过以下方式生成：
 
         ./easyrsa gen-dh
 
-Showing details of requests or certs
+显示请求或证书的详细信息
 ------------------------------------
 
-To show the details of a request or certificate by referencing the short
-EntityName, use one of the following commands. It is an error to call these
-without a matching file.
+要通过引用实体名简称 EntityName 来显示请求或证书的详细信息，请使用以下命令之一。 在没有匹配文件的情况下调用它们会产生错误。
 
         ./easyrsa show-req EntityName
         ./easyrsa show-cert EntityName
 
-Changing private key passphrases
+更改私钥密码短语
 --------------------------------
 
-RSA and EC private keys can be re-encrypted so a new passphrase can be supplied
-with one of the following commands depending on the key type:
+RSA 和 EC 私钥可以重新加密，因此可以根据密钥类型使用以下命令之一提供新的密码短语：
 
         ./easyrsa set-rsa-pass EntityName
         ./easyrsa set-ec-pass EntityName
 
-Optionally, the passphrase can be removed completely with the 'nopass' flag.
-Consult the command help for details.
+（可选）可以使用“nopass”选项将密码短语完全删除。
+请参阅命令帮助以获取详细信息。
