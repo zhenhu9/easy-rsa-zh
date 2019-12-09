@@ -1,18 +1,18 @@
-Easy-RSA 3 TODO / wishlist
+Easy-RSA 3 TODO / 愿望清单
 
-Feature support:
+功能支持：
     * makefile
-        * It may be useful to port the Makefile from the 2.x series
-        * This may be desirable for building and downstream packaging
-    * add pkcs11 support
-        * Much of this may be distro-dependent
-        * Keep platform-specific tools separate from platform-neutral code
-    * add detection for duplicate CN prior to OpenSSL failure
-        * This gets tricky if `updatedb` requires a CA passphrase
-	* It would help to warn users before OpenSSL throws errors
+        * 从 2.x 系列移植 Makefile 可能会很有用
+        * 这对于构建和下游包装可能是理想的
+    * 添加 pkcs11 支持
+        * 其中大部分可能取决于发行版
+        * 将特定于平台的工具与与平台无关的代码分开
+    * 在 OpenSSL 失败之前添加对重复 CN 的检测
+        * 如果 `updatedb` 需要 CA 密码，这将变得棘手
+	* 这将有助于在 OpenSSL 引发错误之前警告用户
 
-Longer term wishlist:
-    * Support openssl's -password source mechanism:
-        * allow for batching currently "unbatchable" operations, like pkcs12
-        * support one password input that can apply to multiple operations
-        * support a variety of password sources (interactive, pipe, file, etc)
+长期愿望清单：
+    * 支持 openssl 的 -password 源机制：
+        * 允许批处理当前“不可批处理”的操作，例如 pkcs12
+        * 支持一种密码输入，可应用于多种操作
+        * 支持多种密码来源（交互式，管道，文件等）
