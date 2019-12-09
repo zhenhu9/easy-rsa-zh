@@ -1,235 +1,164 @@
-Easy-RSA 3 Documentation Readme
+Easy-RSA 3 文档自述文件
 ===============================
 
-This document explains how Easy-RSA 3 and each of its assorted features work.
+本文档介绍了 Easy-RSA 3 及其各个功能的工作方式。
 
-If you are looking for a quickstart with less background or detail, an
-implementation-specific Howto or Readme may be available in this (the `doc/`)
-directory.
+如果您正在寻找背景或细节较少的快速入门，则此（doc/）目录中可能包含特定于实现的 Howto 或自述文件。
 
-Easy-RSA Overview
+Easy-RSA 概述
 -----------------
 
-Easy-RSA is a utility for managing X.509 PKI, or Public Key Infrastructure. A
-PKI is based on the notion of trusting a particular authority to authenticate a
-remote peer; for more background on how PKI works, see the `Intro-To-PKI`
-document.
+Easy-RSA 是用于管理 X.509 PKI 或公用密钥基础设施的实用程序。 PKI 基于信任特定机构对远程对等方进行身份验证的概念。 有关 PKI 工作原理的更多背景信息，请参阅 `Intro-To-PKI` 文档。
 
-The code is written in platform-neutral POSIX shell, allowing use on a wide
-range of host systems. The official Windows release also comes bundled with the
-programs necessary to use Easy-RSA. The shell code attempts to limit the number
-of external programs it depends on. Crypto-related tasks use openssl as the
-functional backend.
+该代码是用与平台无关的 POSIX shell 编写的，允许在各种主机系统上使用。 Windows 官方发行版还捆绑了使用 Easy-RSA 所需的程序。 shell 程序代码设法限制它所依赖的外部程序的数量。 与加密有关的任务将 openssl 用作功能后端。
 
-Feature Highlights
+功能亮点
 ------------------
 
-Here's a non-exhaustive list of the more notable Easy-RSA features:
+以下是 Easy-RSA 更值得注意的功能的非详尽列表：
 
- *  Easy-RSA is able to manage multiple PKIs, each with their own independent
-    configuration, storage directory, and X.509 extension handling.
- *  Multiple Subject Name (X.509 DN field) formatting options are supported. For
-    VPNs, this means a cleaner commonName only setup can be used.
- *  A single backend is used across all supported platforms, ensuring that no
-    platform is 'left out' of the rich features. Unix-alikes (BSD, Linux, etc)
-    and Windows are all supported.
- *  Easy-RSA's X.509 support includes CRL, CDP, keyUsage/eKu attributes, and
-    additional features. The included support can be changed or extended as an
-    advanced feature.
- *  Interactive and automated (batch) modes of operation
- *  Flexible configuration: features can be enabled through command-line
-    options, environment variables, a config file, or a combination of these.
- *  Built-in defaults allow Easy-RSA to be used without first editing a config
-    file.
+ *  Easy-RSA 能够管理多个 PKI，每个 PKI 都有各自独立的配置，存储目录和 X.509 扩展处理。
+ *  支持多种主题名称（X.509 DN 字段）格式选项。 对于 VPN，这意味着可以使用更清洁的 commonName 设置。
+ *  所有支持的平台都使用一个后端，以确保没有任何平台被丰富功能所“遗漏”。 均支持类 Unix（BSD，Linux 等）和 Windows。
+ *  Easy-RSA 的 X.509 支持包括 CRL，CDP，keyUsage/eKu 属性和其它功能。 包含的支持可以作为高级功能进行更改或扩展。
+ *  交互式和自动化（批量）操作模式。
+ *  灵活的配置：可以通过命令行选项，环境变量，配置文件或它们的组合来启用功能。
+ *  内置默认值就可以使用 Easy-RSA，而无需先编辑配置文件。
 
-Obtaining and Using Easy-RSA
+获取和使用 Easy-RSA
 ----------------------------
 
-#### Download and extraction (installation)
+#### 下载并解压缩（安装）
 
-  Easy-RSA's main program is a script, supported by a couple of config files. As
-  such, there is no formal "installation" required. Preparing to use Easy-RSA is
-  as simple as downloading the compressed package (.tar.gz for Linux/Unix or
-  .zip for Windows) and extract it to a location of your choosing. There is no
-  compiling or OS-dependent setup required.
+  Easy-RSA 的主程序是一个脚本，并受几个配置文件支持。 这样，就不需要正式的“安装”。 准备使用 Easy-RSA 就像下载压缩包一样简单（Linux/Unix 的 .tar.gz；Windows 的 .zip），然后将其解压缩到您选择的位置。 无需编译或基于操作系统的设置。
 
-  You should install and run Easy-RSA as a non-root (non-Administrator) account
-  as root access is not required.
+  您应该以非超级用户（非管理员）帐户安装和运行 Easy-RSA，因为不需要超级用户访问权限。
 
-#### Running Easy-RSA
+#### 运行 Easy-RSA
 
-  Invoking Easy-RSA is done through your preferred shell. Under Windows, you
-  will use the `EasyRSA Start.bat` program to provide a POSIX-shell environment
-  suitable for using Easy-RSA.
-
-  The basic format for running commands is:
+  调用 Easy-RSA 是通过您首选的 shell 完成的。 在 Windows 下，您将使用 `EasyRSA Start.bat` 程序提供适合使用 Easy-RSA 的 POSIX-shell 环境。
+  
+  运行命令的基本格式为：
 
     ./easyrsa command [ cmd-opts ]
 
-  where `command` is the name of a command to run, and `cmd-opts` are any
-  options to supply to the command. Some commands have mandatory or optional
-  cmd-opts. Note the leading `./` component of the command: this is required in
-  Unix-like environments and may be a new concept to some Windows users.
+  其中，`command` 是要运行的命令的名称，而 `cmd-opts` 是要提供给该命令的任何选项。 一些命令具有强制或可选的 cmd-opts。 请注意该命令的前导`./`  部分：在类 Unix 的环境中这是必需的，并且对于某些 Windows 用户而言可能是一个新概念。
 
-  General usage and command help can be shown with:
+  常规用法和命令帮助可以用以下格式显示：
 
     ./easyrsa help [ command ]
 
-  When run without any command, general usage and a list of available commands
-  are shown; when a command is supplied, detailed help output for that command
-  is shown.
+  当不使用任何命令运行时，将显示常规用法和可用命令列表。 提供命令时，将显示该命令的详细帮助输出。
 
-Configuring Easy-RSA
+配置 Easy-RSA
 --------------------
 
-Easy-RSA 3 no longer needs any configuration file prior to operation, unlike
-earlier versions. However, the `vars.example` file contains many commented
-options that can be used to control non-default behavior as required. Reading
-this file will provide an idea of the basic configuration available. Note that
-a vars file must be named just `vars` (without an extension) to actively use it.
+与早期版本不同，Easy-RSA 3 在操作之前不再需要任何配置文件。 但是，`vars.example`文件包含许多注释选项，可用于根据需要控制非默认行为。 读取此文件将提供可用的基本配置的想法。 请注意，必须将 vars 文件仅命名为 `vars`（不带扩展名）才能有效使用它。
 
-Additionally, some options can be defined at runtime with options on the
-command-line. A full list can be shown with:
+此外，可以在运行时使用命令行上的选项定义一些选项。 完整列表可用一下格式显示：
 
     ./easyrsa help options
 
-Any of these options can appear before the command as required as shown below:
+这些选项中的任何一个都可以根据需要置于command 之前，如下所示：
 
     ./easyrsa [options] command [ cmd-opts ]
 
-For experts, additional configuration flexibility is available by way of
-env-vars and custom X.509 extensions. Consult the `EasyRSA-Advanced`
-documentation for details
+对于专家来说，可以通过 env-vars 和自定义 X.509 扩展来获得额外的配置灵活性。 有关详细信息，请查阅 `EasyRSA-Advanced` 文档。
 
-Getting Started: The Basics
+入门：基础知识
 ---------------------------
 
-Some of the terms used here will be common to those familiar with how PKI works.
-Instead of describing PKI basics, please consult the document `Intro-To-PKI` if
-you need a more basic description of how a PKI works.
+对于熟悉 PKI 工作原理的人来说，此处使用的某些术语是通用的。 如果您需要有关 PKI 工作原理的更基本描述，请参考文档 `Intro-To-PKI` 描述的 PKI 基础知识。
 
-#### Creating an Easy-RSA PKI
+#### 创建 Easy-RSA PKI
 
-  In order to do something useful, Easy-RSA needs to first initialize a
-  directory for the PKI. Multiple PKIs can be managed with a single installation
-  of Easy-RSA, but the default directory is called simply "pki" unless otherwise
-  specified.
+  为了做一些有用的事情，Easy-RSA 需要首先为 PKI 初始化一个目录。 一次安装 Easy-RSA 即可管理多个 PKI，但除非另有说明，否则默认目录简称为 “pki”。
 
-  To create or clear out (re-initialize) a new PKI, use the command:
+  要创建或清除（重新初始化）新的 PKI，请使用以下命令：
 
     ./easyrsa init-pki
 
-  which will create a new, blank PKI structure ready to be used. Once created,
-  this PKI can be used to make a new CA or generate keypairs.
+  这将创建一个可供使用的新的空白 PKI 结构。 创建之后，该 PKI 可用于创建新的 CA 或生成密钥对。
 
-#### The PKI Directory Structure
+#### PKI 目录结构
 
-  An Easy-RSA PKI contains the following directory structure:
+  Easy-RSA PKI 包含以下目录结构：
 
-  * private/ - dir with private keys generated on this host
-  * reqs/ - dir with locally generated certificate requests (for a CA imported
-    requests are stored here)
+  * private/ - 该主机上生成的带有私钥的目录。
+  * reqs/ - 本地生成的证书请求（对于 CA 导入的请求存储在此处）的目录。
 
-  In a clean PKI no files will exist until, just the bare directories. Commands
-  called later will create the necessary files depending on the operation.
+  在干净的 PKI 中，只有裸目录，不存在文件。 稍后调用的命令将根据操作创建必要的文件。
 
-  When building a CA, a number of new files are created by a combination of
-  Easy-RSA and (indirectly) openssl. The important CA files are:
+  建立 CA 时，Easy-RSA 和（间接）openssl 的组合会创建许多新文件。 重要的 CA 文件是：
 
-  * `ca.crt` - This is the CA certificate
-  * `index.txt` - This is the "master database" of all issued certs
-  * `serial` - Stores the next serial number (serial numbers increment)
-  * `private/ca.key` - This is the CA private key (security-critical)
-  * `certs_by_serial/` - dir with all CA-signed certs by serial number
-  * `issued/` - dir with issued certs by commonName
+  * `ca.crt` - 这是 CA 证书。
+  * `index.txt` - 这是所有已发行证书的“主数据库”。
+  * `serial` - 存储下一个序列号（序列号递增）。
+  * `private/ca.key` - 这是 CA 私钥（对安全性至关重要）。
+  * `certs_by_serial/` - 所有带有 CA 签名证书的目录（按序列号）。
+  * `issued/` - 使用 commonName 颁发证书的目录。
 
-#### After Creating a PKI
+#### 创建 PKI 之后
 
-  Once you have created a PKI, the next useful step will be to either create a
-  CA, or generate keypairs for a system that needs them. Continue with the
-  relevant section below.
+  一旦创建了 PKI，下一个有用的步骤将是创建 CA，或为它们所需的系统生成密钥对。 继续下面的相关部分。
 
-Using Easy-RSA as a CA
+用 Easy-RSA 作为 CA
 ----------------------
 
-#### Building the CA
+#### 构建 CA
 
-  In order to sign requests to produce certificates, you need a CA. To create a
-  new CA in a PKI you have created, run:
+  为了签名请求以生成证书，您需要一个 CA。 要在已创建的 PKI 中创建新的 CA，请运行：
 
     ./easyrsa build-ca
 
-  Be sure to use a strong passphrase to protect the CA private key. Note that
-  you must supply this passphrase in the future when performing signing
-  operations with your CA, so be sure to remember it.
+  确保使用强密码短语来保护 CA 私钥。 请注意，将来用 CA 执行签名操作时必须提供此密码短语，因此请务必记住它。
 
-  During the creation process, you will also select a name for the CA called the
-  Common Name (CN.) This name is purely for display purposes and can be set as
-  you like.
+  在创建过程中，您还将为 CA 选择一个名称，即“通用名称（CN）”。该名称仅用于显示目的，可以根据需要设置。
 
-#### Importing requests to the CA
+#### 将请求导入到 CA
 
-  Once a CA is built, the PKI is intended to be used to import requests from
-  external systems that are requesting a signed certificate from this CA. In
-  order to sign the request, it must first be imported so Easy-RSA knows about
-  it. This request file must be a standard CSR in PKCS#10 format.
+  一旦建立了 CA，便可以使用 PKI 从外部系统导入请求，导入该外部系统正在向此 CA 请求签名证书。 为了签名请求，必须先将其导入，以便 Easy-RSA 知道。 该请求文件必须是 PKCS#10 格式的标准 CSR。
 
-  Regardless of the file name to import, Easy-RSA uses a "short name" defined
-  during import to refer to this request. Importing works like this:
+  无论要导入的文件名如何，Easy-RSA 都会使用在导入期间定义的“短名称”来引用此请求。 导入工作如下：
 
     ./easyrsa import-req /path/to/request.req nameOfRequest
 
-  The nameOfRequest should normally refer to the system or person making the
-  request.
+  nameOfRequest 通常应指提出请求的系统或人员。
 
-#### Signing a request
+#### 签名请求
 
-  Once Easy-RSA has imported a request, it can be reviewed and signed. Every
-  certificate needs a "type" which controls what extensions the certificate gets
-  Easy-RSA ships with 3 possible types: `client`, `server`, and `ca`, described
-  below:
+  Easy-RSA 导入请求后，即可对其进行审核和签名。 每个证书都需要一个“类型”，该类型可以控制 Easy-RSA 附带的三种扩展类型：`client`，`server` 和 `ca`，具体描述如下：
 
-  * client - A TLS client, suitable for a VPN user or web browser (web client)
-  * server - A TLS server, suitable for a VPN or web server
-  * ca - A subordinate CA, used when chaining multiple CAs together
+  * client - TLS 客户端，适用于 VPN 用户或 Web 浏览器（Web 客户端）。
+  * server - TLS 服务器，适用于 VPN 或 Web 服务器。
+  * ca - 从属 CA，将多个 CA 链接在一起时使用。
 
-  Additional types of certs may be defined by local sites as needed; see the
-  advanced documentation for details.
+  本地站点可以根据需要定义其它类型的证书； 有关详细信息，请参见高级文档。
 
-#### Revoking and publishing CRLs
+#### 废除证书和发布 CRL
 
-  If an issue certificate needs to be revoked, this can be done as follows:
+  如果需要废除已签发的证书，可以按以下步骤进行：
 
     ./easyrsa revoke nameOfRequest
 
-  To generate a CRL suitable for publishing to systems that use it, run:
+  要生成适合发布到使用它的系统的 CRL，请运行：
 
     ./easyrsa gen-crl
 
-  Note that this will need to be published or sent to systems that rely on an
-  up-to-date CRL as the certificate is still otherwise valid.
+  请注意，由于证书在其他方面仍然有效，因此需要将其发布或发送到依赖最新 CRL 的系统。
 
-Using Easy-RSA to generate keypairs & requests
+使用 Easy-RSA 生成密钥对和请求
 ----------------------------------------------
 
-Easy-RSA can generate a keypair and certificate request in PKCS#10 format. This
-request is what a CA needs in order to generate and return a signed certificate.
+Easy-RSA 可以生成密钥对和 PKCS#10 格式的证书请求。 CA 需要此请求才能生成并返回已签名的证书。
 
-Ideally you should never generate entity keypairs for a client or server in a
-PKI you are using for your CA. It is best to separate this process and generate
-keypairs only on the systems you plan to use them.
+理想情况下，永远不要在用于 CA 的 PKI 中为客户端或服务器生成实体密钥对。 最好分开此过程，并仅在计划使用它们的系统上生成密钥对。
 
-Easy-RSA can generate a keypair and request with the following command:
+Easy-RSA 可以使用以下命令生成密钥对和请求：
 
     ./easyrsa gen-req nameOfRequest
 
-You will then be given a chance to modify the Subject details of your request.
-Easy-RSA uses the short name supplied on the command-line by default, though you
-are free to change it if necessary. After providing a passphrase and Subject
-details, the keypair and request files will be shown.
+然后，您将有机会修改请求的主题详细信息。 默认情况下，Easy-RSA 使用命令行中提供的简称，尽管您可以根据需要随意更改它。 提供密码和主题详细信息后，将显示密钥对和请求文件。
 
-In order to obtain a signed certificate, the request file must be sent to the
-CA for signing; this step is obviously not required if a single PKI is used as
-both the CA and keypair/request generation as the generated request is already
-"imported."
+为了获得签名证书，必须将请求文件发送到 CA 进行签名； 如果将单个 PKI 用作 CA 和密钥对/请求生成两者，则显然不需要此步骤，因为已“导入”了生成的请求。
 
