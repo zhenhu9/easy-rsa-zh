@@ -1,41 +1,32 @@
-Building Easy-RSA 3
+构建 Easy-RSA 3
 ===
 
-This document serves as the packaging reference.
+本文档用作包装参考。
 
-Using the buildscript
+使用构建脚本
 ---
 
-build/build-dist.sh prepares a release-ready tarball from the current source
-tree. Ensure a clean checkout (remove your left-over temp files) and verify
-release changes are in order:
+build/build-dist.sh 从当前源代码树准备可发布的 tarball。 确保干净签出（删除剩余的临时文件），并确认发布更改是否按顺序：
 
- * ChangeLog updated for version, date, & feature changes
- * Release-tag prepared in git
+ * 更新了 ChangeLog 的版本，日期和功能更改
+ * 在 git 中准备发布标签
 
-When ready, set a match version on the tarball & inside dir with:
+准备好后，在压缩包和内部目录中设置匹配版本：
 
     ./build/build-dist.sh --version=3.2.1
 
-For development use, omitting the --version param creates by default a
-`git-development` version.
+供开发使用，省略 --version 参数默认会创建一个 `git-development` 版本。
 
 Windows Build Extras
 ---
 
-When the build-script is updated to support Windows, this section will be
-updated to match.
+当更新构建脚本以支持 Windows 时，此部分将更新以匹配。
 
-Note that Windows builds require external binary files from the unxutils and
-mksh/Win32 projects which are not included in the Easy-RSA source tree. Starting
-with a basic build dir from earlier, proceed as follows.
+请注意，Windows 构建需要 unxutils 和 mksh/Win32 项目中的外部二进制文件，这些文件不包含在 Easy-RSA 源代码树中。 从较早的基本构建目录开始，请按照以下步骤操作。
 
-1. Copy everything from `distro/windows/` into the target dir root. Make sure
-   that text files follow the Windows EOL convention (CR+LF) -- a git checkout
-   of the source project on Windows generally does this for you already.
+1. 将所有内容从 `distro/windows/` 复制到目标根目录。 确保文本文件遵循 Windows EOL 约定（CR+LF）-- Windows 上的 git  对项目源码的检出通常已经为您做到了。
 
-2. Convert the .md readme/doc files into html for easier viewing by Windows
-   clients. One option using the python3 `markdown` module is:
+2. 将 readme/doc 内的 .md 文件转换为 html，以便 Windows 客户端更轻松地查看。 使用 python3 `markdown` 模块的一种选择是：
 
     find ./ -name '*.md' | while read f
     do
@@ -43,12 +34,9 @@ with a basic build dir from earlier, proceed as follows.
       rm "$f"
     done
 
-3. Copy mksh.exe from the mksh/Win32 project into the target dir named exactly
-   `bin/sh.exe` (note the name difference.)
+3. 将 mksh.exe 从 mksh/Win32 项目复制到精确命名为 `bin/sh.exe` 的目标目录中（注意名称不同）。
 
-4. Copy the following files from the unxutils project into the target `/bin/`
-   dir. Files marked with [+] are optional in unofficial builds and serve only
-   to make the shell environment more usable for users.
+4. 将以下文件从 unxutils 项目复制到目标 `/bin/` 目录中。 标有 [+] 的文件在非官方版本中是可选的，并且仅用于使 Shell 环境对用户更有用。
 
    * awk.exe
    * cat.exe
@@ -64,4 +52,4 @@ with a basic build dir from earlier, proceed as follows.
    * sed.exe [+]
    * which.exe
 
-5. Zip up the target directory for release distribution.
+5. 压缩目标目录以进行发行版分发。
