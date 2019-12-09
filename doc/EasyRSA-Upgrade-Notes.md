@@ -1,58 +1,37 @@
-Upgrading to Easy-RSA 3 from earlier versions
+从早期版本升级到 Easy-RSA 3
 =========
 
-People upgrading to Easy-RSA 3 from a 2.x version should note some important
-changes starting with version 3. For a better overview of version 3 in general,
-see the Readme in the doc/ directory.
+从 2.x 版本升级到 Easy-RSA 3 的人们应该注意从版本 3 开始的一些重要更改。有关总体上对版本 3 的更好概述，请参阅 doc/ 目录中的自述文件。
 
-List of important changes
+重要变更清单
 ----
 
- * nsCertType extensions are no longer included by default. Use of such
-   "Netscape" attributes have been deprecated upstream and their use is
-   discouraged. Configure `EASYRSA_NS_SUPPORT` in vars if you want to enable
-   this legacy behavior.
+ * 默认情况下不再包含 nsCertType 扩展名。 此类 “Netscape” 属性的使用已在上游被弃用，不鼓励使用它们。 如果要启用此行为，请在 vars 中配置 `EASYRSA_NS_SUPPORT`。
 
-   Notably, this is important for OpenVPN deployments relying on the
-   `--ns-cert-type` directive. Either have OpenVPN use the preferred
-   `--remote-cert-tls` option, or enable legacy NS extensions.
+   值得注意的是，这对于依赖于 `--ns-cert-type` 指令的 OpenVPN 部署非常重要。 让 OpenVPN 使用首选的 `--remote-cert-tls` 选项，或启用旧版 NS 扩展。
 
- * The default request Subject (or DN, Distinguished Name) includes just the
-   commonName. This is more suitable for VPNs and environments that don't wish
-   to include info about the Country/State/City/Org/OU in certs. Configure
-   `EASYRSA_DN` in vars if you want to enable the legacy behavior.
+ * 默认请求主题（或 DN，区别于其它的名称）仅包含 commonName。 这更适用于不希望在证书中包含有关 Country/State/City/Org/OU 的信息的 VPN 和环境。 如果要启用旧版行为，请在 vars 中配置 `EASYRSA_DN`。
 
- * The 3.0 release lacks PKCS#11 (smartcard/token) support. This is anticipated
-   to be supported in a future point-release to target each platform's need.
+ * 3.0 版本缺少 PKCS#11（智能卡/令牌）支持。 预期将在将来的版本中支持此功能，以针对每个平台的需求。
 
- * The -utf8 option has been added for all supported commands.  This should be
-   backwards compatible with ASCII strings.
+ * 该 -utf8 选项已被添加到所有支持的命令。 这应该向后兼容 ASCII 字符串。
 
- * The default private key encryption has been changed from 3des to aes256.
+ * 默认的私钥加密已从 3des 更改为 aes256。
 
 
-Some new concepts
+一些新概念
 ----
 
-Easy-RSA 3 has some new concepts compared to the prior v2 series.
+与先前的 v2 系列相比，Easy-RSA 3 具有一些新概念。
 
-### Request-Import-Sign workflow
+### 请求-导入-签名 工作流程
 
-  v3 is now designed to support keypairs generated on the target system where
-  they will be used, thus improving security as no keys need to be transferred
-  between hosts. The old workflow of generating everything in a single PKI is
-  still supported as well.
+  现在，v3 旨在支持将在使用的目标系统上生成的密钥对，从而提高了安全性，因为无需在主机之间传输密钥。 仍然支持在单个 PKI 中生成所有内容的旧工作流程。
 
-  The recommended workflow when using Easy-RSA as a CA is to import requests,
-  sign them, and return the issued & CA certs. Each requesting system can use
-  Easy-RSA without a CA to generate keypairs & requests.
+  将 Easy-RSA 用作 CA 时，建议的工作流程是导入请求，对其进行签名并返回已颁发的 CA 证书。 每个请求系统都可以使用不带 CA 的 Easy-RSA 来生成密钥对和请求。
 
-### "Org"-style DN flexibility
+### "Org"-style DN 灵活性
 
-  When using Easy-RSA in the "org" DN mode, it is no longer required to match
-  some of the field values. This improves flexibility, and enables easier remote
-  generation as the requester doesn't need to know the CA's values in advance.
+  在 “org” DN 模式下使用 Easy-RSA 时，不再需要匹配某些字段值。 这提高了灵活性，并且由于请求者不需要事先知道 CA 的值，因此可以简化远程生成。
 
-  Previously in v2, the Country, State, and Org values all had to match or a
-  request couldn't be signed. If you want the old behavior you can change the
-  OpenSSL config to require it or simply look over the DN at signing time.
+  在 v2 之前的版本中，国家，地区，州和组织的值必须全部匹配，否则无法签名请求。 如果您想要旧的行为，则可以更改 OpenSSL 配置以要求它，或者在签名时仅查看 DN。
