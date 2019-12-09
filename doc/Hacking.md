@@ -1,142 +1,94 @@
-Easy-RSA 3 Hacking Guide
+Easy-RSA 3 骇客指南
 ===
 
-This document is aimed at programmers looking to improve on the existing
-codebase.
+本文档面向希望在现有代码库上进行改进的程序员。
 
-Compatibility
+兼容性
 ---
 
-The `easyrsa` code is written in POSIX shell (and any cases where it is not is
-considered a bug to be fixed.) The only exceptions are the `local` keyword and
-the construct `export FOO=baz`, both well-supported.
+`easyrsa` 代码是用 POSIX shell 编写的（以及在任何情况下均不认为是要修复的错误）。唯一的例外是 `local` 关键字和结构 `export FOO=baz`，两者均受支持。
 
-As such, modifications to the code should also be POSIX; platform-specific code
-should be placed under the `distro/` dir and listed by target platform.
+因此，对代码的修改也应遵循 POSIX； 特定于平台的代码应放在 `distro/` 目录下，并按目标平台列出。
 
-Coding conventions
+编码约定
 ---
 
-While there aren't strict syntax standards associated with the project, please
-follow the existing format and flow when possible; however, specific exceptions
-can be made if there is a significant reason or benefit.
+尽管该项目没有严格的语法标准，但请尽可能遵循现有的格式和流程。 但是，如果有重大理由或利益，则可以做出特定的例外。
 
-Do try to:
+请尝试：
 
-  * Keep variables locally-scoped when possible
-  * Comment sections of code for readability
-  * Use the conventions for prefixes on global variables
-  * Set editors for tab stops of 8 spaces
-  * Use tabs for code indents; use aligned spaces for console text
+  * 尽可能使变量在本地作用域内。
+  * 注释代码部分以提高可读性。
+  * 将约定用于全局变量的前缀。
+  * 设置8个制表位的编辑器。
+  * 使用标签来缩进； 为控制台文本使用对齐的空间。
 
-Keeping code, docs, and examples in sync
+使代码，文档和示例保持同步
 ---
 
-Changes that adjust, add, or remove features should have relevant docs, help
-output, and examples updated at the same time.
+调整，添加或删除功能的更改应同时具有相关的文档，帮助输出和示例。
 
-Release versioning
+发行版本
 ---
 
-A point-release bump (eg: 3.0 to 3.1) is required when the frontend interface
-changes in a non-backwards compatible way. Always assume someone has an
-automated process that relies on the current functionality for official
-(non-beta, non-rc) releases. A possible exception exists for bugfixes that do
-break backwards-compatibility; caution is to be used in such cases.
+当前端接口以非向后兼容的方式更改时，需要一个单点发布版本（例如：3.0 到 3.1）。 始终假定某人的自动化过程依赖于官方（非 Beta 版，非 rc 版）的当前功能。 确实会破坏向后兼容性的错误修正可能存在例外。 在这种情况下要小心。
 
-The addition of a new command may or may not require a point-release depending
-on the significance of the feature; the same holds true for additional optional
-arguments to commands.
+根据功能的重要性，添加新命令可能需要也可能不需要一个单点发布版本； 对于命令的其他可选参数也是如此。
 
-Project layout
+项目布局
 ---
 
-The project's files are structured as follows:
+该项目的文件结构如下：
 
-  * `easyrsa3/` is the primary project code. On Linux/Unix-alikes, all the core
-    code and supporting files are stored here.
-  * `Licensing/` is for license docs.
-  * `build/` is for build information and scripts.
-  * `contrib/` is for externally-contributed files, such as useful external
-    scripts or interfaces for other systems/languages.
-  * `distro/` is for distro-specific supporting files, such as the Windows
-    frontend wrappers. Code components that are not platform-neutral should go
-    here.
-  * `doc/` is for documentation. Much of this is in Markdown format which can be
-    easily converted to HTML for easy viewing under Windows.
-  * `release-keys/` list current and former KeyIDs used to sign release packages
-    (not necessarily git tags) available for download.
-  * The top-level dir includes files for basic project info and reference
-    appropriate locations for more detail.
+  * `easyrsa3/` 是项目的主要代码。 在类 Linux/Unix 上，所有核心代码和支持文件都存储在这里。
+  * `Licensing/` 适用于许可文档。
+  * `build/` 适用于构建信息和脚本。
+  * `contrib/` 适用于外部贡献的文件，例如有用的外部脚本或其它系统/语言的接口。
+  * `distro/` 适用于特定于发行版的支持文件，例如 Windows 前端包装。 与平台无关的代码组件应放在此处。
+  * `doc/` 适用于文档。 其中大部分采用 Markdown 格式，可以轻松转换为 HTML，以便在 Windows 下轻松查看。
+  * `release-keys/` 列出了当前和以前的 KeyID，这些 ID 用于签名可供下载的发行包（不一定是 git 标签）。
+  * 顶层目录包含用于项目基本信息的文件，并提供参考适当位置的详细信息。
 
-As a brief note, it is actually possible to take just the easyrsa3/ dir and end
-up with a functional project; the remaining structure includes docs, build prep,
-distro-specific wrappers, and contributed files.
+简而言之，实际上有可能只采用 easyrsa3/ 目录，并最终完成一个功能项目。 其余结构包括文档，构建准备文件，特定于发行版的包装程序和贡献的文件。
 
-Git conventions
+Git 约定
 ---
 
-As of Easy-RSA 3, the following git conventions should be used. These are mostly
-useful for people with repo access in order to keep a standard meaning to commit
-messages and merge actions.
+从 Easy-RSA 3 开始，应使用以下 git 约定。 这些对于仓库具有访问权限的人员来说非常有用，以保持提交消息和合并操作的标准含义。
 
-### Signed-off-by: and related commit message lines
+### 签署人：及相关的提交消息行
 
-  Committers with push access should ensure a `Signed-off-by:` line exists at
-  the end of the commit message with their name on it. This indicates that the
-  committer has reviewed the changes to the commit in question and approve of
-  the feature and code in question. It also helps verify the code came from an
-  acceptable source that won't cause issues with the license.
+  具有推送访问权限的提交者应确保在提交信息的末尾存在 `Signed-off-by:` 行，并在其上标有其名称。 这表明提交者已经审查了对相关提交的更改，并批准了相关功能和代码。 它还有助于验证代码是否来自可接受的来源，不会导致许可证问题。
 
-  This can be automatically added by git using `git commit -s`.
+  这可以使用 git 的 `git commit -s` 自动添加。
 
-  Additional references can be included as well. If multiple people reviewed the
-  change, the committer may add their names in additional `Signed-off-by:`
-  lines; do get permission from that person before using their name, however ;)
+  也可以包括其它参考。 如果有多个人检查了更改，则提交者可以将其姓名添加到其它 `Signed-off-by:` 行中； 确实在使用其姓名之前先获得该人的允许；但是 ;)
 
-  The following references may be useful as well:
+  以下参考也可能有用：
 
-  * `Signed-off-by:` -- discussed above, indicates review of the commit
-  * `Author:` -- references an author of a particular feature, in full or
-    significant part
-  * `Changes-by:` -- indicates the listed party contributed changes or
-    modifications to a feature
-  * `Acked-by:` -- indicates review of the feature, code, and/or functional
-    correctness
+  * `Signed-off-by:` -- 上面讨论过，表示已审核提交。
+  * `Author:` -- 全部或重要部分引用特定功能的作者。
+  * `Changes-by:` -- 表示列出的一方对功能做出了更改或修改。
+  * `Acked-by:` -- 表示已审查功能，代码和/或功能正确性。
 
-### Merging from external sources (forks, patches, etc)
+### 从外部来源（分叉，补丁等）合并
 
-  Contributions can come in many forms: GitHub "pull requests" from cloned
-  repos, references to external repos, patches to the ML, or others. Those won't
-  necessary have `Signed-off-by:` lines or may contain less info in the commit
-  message than is desirable to explain the changes.
+  贡献可以有多种形式：来自克隆存储库的 GitHub “拉取请求”，对外部存储库的引用，对 ML 的补丁或其它。 那些没有必要具有 `Signed-off-by:` 行，或者在提交消息中包含的信息可能少于所希望的更改解释。
 
-  The committing author to this project should make a merge-commit in this case
-  with the appropriate details provided there. If additional code changes are
-  necessary, this can be done on a local branch prior to merging back into the
-  mainline branch.
+  在这种情况下，该项目的提交作者应进行合并提交，并在其中提供适当的详细信息。 如果需要更改其它代码，则可以在合并回主线分支之前在本地分支上完成此操作。
 
-  This merge-commit should list involved contributors with `Author:` or similar
-  lines as required. The individual commits involved in a merge also retain the
-  original committer; regardless, the merge-commit message should give a clear
-  indication of what the entire set of commits does as a whole.
+  这个合并提交应该列出参与的贡献者，并按要求添加 `Author:` 或类似的行。 合并中涉及的各个提交也将保留原始提交者； 无论如何，合并提交信息应该清楚地表明整个提交集的整体功能。
 
-### Tagging
+### 标签
 
-  Tags should follow the convention:
+  标签应遵循以下约定：
 
     vM.m.p
 
-  where `M` is the major version, `m` is the minor "point-release" version, and
-  `p` is the patch-level. Suffixes of `-rc#`, `-beta#`, etc can be added for
-  pre-release versions as required.
+  其中 `M` 是主要版本，`m` 是次要的 “point-release” 版本，而 `p` 是补丁程序级别。 可以根据需要为预发行版本添加 `-rc#`，`-beta#` 等后缀。
 
-  Currently tags are taken from the mainline development branch in question. The
-  ChangeLog should thus be updated prior to tagging. Tags should also be
-  annotated with an appropriate commit message and signed-off. This can be done
-  as shown below (don't use `-s` unless you intend to use GPG with git.)
+  当前，标签取自相关的主线开发分支。 因此，ChangeLog 应该在标记标签之前进行更新。 标签也应带有适当的提交消息并已签名。 可以如下所示完成此操作（除非打算将 GPG 与 git 一起使用，否则不要使用 `-s`。）
 
     git tag -a v1.2.3
 
-  Corresponding release downloads can be uploaded to release distribution points
-  as required.
+  可以根据需要将相应的发行版下载上载到发行点。
